@@ -1,0 +1,320 @@
+
+/* =========================================
+   PADIPREDICT - GLOBAL DESIGN SYSTEM
+========================================= */
+
+:root {
+    --primary: #245B45;
+    --primary-light: #397B59;
+    --primary-dark: #194632;
+    --accent: #A5C98B;
+
+    --background: #F7F9F5;
+    --surface: #FFFFFF;
+    --surface-soft: #EDF3EA;
+
+    --text: #26382E;
+    --text-muted: #718174;
+
+    --border: #E3EADF;
+
+    --shadow:
+        0 4px 16px rgba(36, 91, 69, 0.06);
+}
+
+/* =========================================
+   GLOBAL
+========================================= */
+
+.stApp {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: "Segoe UI", sans-serif;
+}
+
+.block-container {
+    max-width: 1250px;
+    padding-top: 2.2rem;
+    padding-bottom: 3rem;
+}
+
+h1, h2, h3, h4 {
+    color: var(--primary-dark);
+    font-weight: 700;
+}
+
+p {
+    line-height: 1.7;
+}
+
+footer {
+    visibility: hidden;
+}
+
+/* =========================================
+   HERO
+========================================= */
+
+.hero {
+    background: linear-gradient(
+        125deg,
+        var(--primary-dark),
+        var(--primary-light)
+    );
+
+    padding: 46px;
+    border-radius: 22px;
+    color: white;
+    margin-bottom: 28px;
+
+    box-shadow:
+        0 8px 25px rgba(36, 91, 69, 0.13);
+}
+
+.hero h1 {
+    color: white;
+    font-size: 43px;
+    font-weight: 750;
+    margin-bottom: 12px;
+}
+
+.hero p {
+    color: #E4F0E6;
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+/* =========================================
+   SECTION
+========================================= */
+
+.section-title {
+    color: var(--primary);
+    font-size: 25px;
+    font-weight: 700;
+    margin-top: 25px;
+    margin-bottom: 18px;
+}
+
+.section-description {
+    color: var(--text-muted);
+    font-size: 14px;
+    margin-top: -10px;
+    margin-bottom: 20px;
+}
+
+/* =========================================
+   METRIC CARDS
+========================================= */
+
+div[data-testid="stMetric"] {
+    background: var(--surface);
+    padding: 21px;
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    box-shadow: var(--shadow);
+}
+
+div[data-testid="stMetricLabel"] {
+    color: var(--text-muted);
+}
+
+div[data-testid="stMetricValue"] {
+    color: var(--primary);
+    font-weight: 750;
+}
+
+/* =========================================
+   CARDS
+========================================= */
+
+.info-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 20px;
+    min-height: 105px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow);
+}
+
+.info-card h4 {
+    color: var(--primary);
+    margin-bottom: 8px;
+}
+
+.info-label {
+    color: var(--text-muted);
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.info-value {
+    color: var(--primary);
+    font-size: 20px;
+    font-weight: 700;
+}
+
+/* =========================================
+   PREDICTION RESULT
+========================================= */
+
+.result-card {
+    background: linear-gradient(
+        125deg,
+        var(--primary-dark),
+        var(--primary-light)
+    );
+
+    padding: 32px;
+    border-radius: 20px;
+    color: white;
+    min-height: 235px;
+    margin-top: 15px;
+    margin-bottom: 20px;
+
+    box-shadow:
+        0 8px 24px rgba(31, 81, 61, 0.12);
+}
+
+.result-card h3 {
+    color: #E4F0E6;
+    font-size: 17px;
+}
+
+.result-label {
+    color: #D8EBDD;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.result-value {
+    color: white;
+    font-size: 46px;
+    font-weight: 750;
+    margin-top: 22px;
+    margin-bottom: 5px;
+}
+
+.result-unit {
+    color: #E2F0E5;
+    font-size: 14px;
+}
+
+.result-note,
+.result-description {
+    color: #D8EBDD;
+    font-size: 13px;
+    margin-top: 20px;
+}
+
+.result-heading {
+    color: var(--primary);
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 18px;
+}
+
+/* =========================================
+   BUTTONS
+========================================= */
+
+.stButton button,
+.stDownloadButton button {
+    background-color: var(--primary);
+    color: white;
+    border: 1px solid var(--primary);
+    border-radius: 11px;
+    padding: 10px 22px;
+    font-weight: 650;
+    transition: 0.2s ease;
+}
+
+.stButton button:hover,
+.stDownloadButton button:hover {
+    background-color: var(--primary-light);
+    color: white;
+    border-color: var(--primary-light);
+}
+
+/* =========================================
+   INPUTS
+========================================= */
+
+div[data-baseweb="input"],
+div[data-baseweb="select"] {
+    border-radius: 10px;
+}
+
+.stTextInput label,
+.stNumberInput label,
+.stSelectbox label,
+.stMultiSelect label {
+    color: var(--primary-dark);
+    font-weight: 600;
+}
+
+/* =========================================
+   SIDEBAR
+========================================= */
+
+section[data-testid="stSidebar"] {
+    background-color: var(--surface-soft);
+    border-right: 1px solid var(--border);
+}
+
+section[data-testid="stSidebar"] h1,
+section[data-testid="stSidebar"] h2,
+section[data-testid="stSidebar"] h3 {
+    color: var(--primary);
+}
+
+/* =========================================
+   ALERTS
+========================================= */
+
+div[data-testid="stAlert"] {
+    border-radius: 12px;
+}
+
+/* =========================================
+   EXPANDER
+========================================= */
+
+div[data-testid="stExpander"] {
+    background-color: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 13px;
+}
+
+/* =========================================
+   DIVIDER
+========================================= */
+
+hr {
+    border-color: var(--border);
+}
+
+/* =========================================
+   RESPONSIVE
+========================================= */
+
+@media (max-width: 768px) {
+    .block-container {
+        padding-top: 1rem;
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
+
+    .hero {
+        padding: 26px;
+    }
+
+    .hero h1 {
+        font-size: 32px;
+    }
+
+    .result-value {
+        font-size: 36px;
+    }
+}
