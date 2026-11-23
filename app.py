@@ -1,6 +1,5 @@
 import streamlit as st
-import base64
-from pathlib import Path
+from ui_helper import load_global_style
 
 # ==========================================
 # 1. KONFIGURASI HALAMAN
@@ -13,44 +12,15 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
-
 # ==========================================
 # 2. LOAD GLOBAL CSS + BACKGROUND IMAGE
 # ==========================================
 
-ROOT_DIR = Path(__file__).resolve().parent
-
-def load_css():
-    css_path = ROOT_DIR / "assets" / "styles" / "style.css"
-    image_path = ROOT_DIR / "assets" / "images" / "rice-field-bg.jpeg"
-
-    # Membaca file CSS
-    css = css_path.read_text(encoding="utf-8")
-
-    # Membaca dan mengubah gambar menjadi Base64
-    image_base64 = base64.b64encode(
-        image_path.read_bytes()
-    ).decode("utf-8")
-
-    # Mengganti placeholder gambar di CSS
-    image_url = f"data:image/jpeg;base64,{image_base64}"
-    css = css.replace("BACKGROUND_IMAGE", image_url)
-
-    # Menerapkan CSS ke seluruh aplikasi
-    st.markdown(
-        f"<style>{css}</style>",
-        unsafe_allow_html=True
-    )
-
-
-# Jalankan CSS
-load_css()
-
+load_global_style()
 
 # ==========================================
 # 3. HERO SECTION
 # ==========================================
-
 
 st.markdown(
     """
@@ -67,7 +37,6 @@ st.markdown(
     """,
     unsafe_allow_html=True
 )
-
 
 # ==========================================
 # 4. INFORMASI PENELITIAN
@@ -271,6 +240,5 @@ st.info(
 st.divider()
 
 st.caption(
-    "PadiPredict | SKelompok 19 Machine Learning"
+    "PadiPredict | Kelompok 19 Machine Learning"
 )
-
