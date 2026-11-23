@@ -1,6 +1,6 @@
-
-from pathlib import Path
 import streamlit as st
+import base64
+from pathlib import Path
 
 # ==========================================
 # 1. KONFIGURASI HALAMAN
@@ -13,22 +13,39 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+
 # ==========================================
-# 2. LOAD CUSTOM CSS
+# 2. LOAD GLOBAL CSS + BACKGROUND IMAGE
 # ==========================================
 
 ROOT_DIR = Path(__file__).resolve().parent
-CSS_PATH = ROOT_DIR / "assets" / "styles" / "style.css"
 
-def load_css(file_path):
-    if file_path.exists():
-        with open(file_path, "r", encoding="utf-8") as file:
-            st.markdown(
-                f"<style>{file.read()}</style>",
-                unsafe_allow_html=True
-            )
+def load_css():
+    css_path = ROOT_DIR / "assets" / "styles" / "style.css"
+    image_path = ROOT_DIR / "assets" / "images" / "rice-field-bg.jpeg"
 
-load_css(CSS_PATH)
+    # Membaca file CSS
+    css = css_path.read_text(encoding="utf-8")
+
+    # Membaca dan mengubah gambar menjadi Base64
+    image_base64 = base64.b64encode(
+        image_path.read_bytes()
+    ).decode("utf-8")
+
+    # Mengganti placeholder gambar di CSS
+    image_url = f"data:image/jpeg;base64,{image_base64}"
+    css = css.replace("BACKGROUND_IMAGE", image_url)
+
+    # Menerapkan CSS ke seluruh aplikasi
+    st.markdown(
+        f"<style>{css}</style>",
+        unsafe_allow_html=True
+    )
+
+
+# Jalankan CSS
+load_css()
+
 
 # ==========================================
 # 3. HERO SECTION
