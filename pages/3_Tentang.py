@@ -192,19 +192,60 @@ st.divider()
 # 9. TIM PENGEMBANG
 # ==========================================
 
-st.subheader("👥 Tim Pengembang")
+st.markdown("---")
 
-st.write(
-    """
-    PadiPredict dikembangkan secara berkelompok sebagai
-    bagian dari proyek mata kuliah Pembelajaran Mesin.
-    """
+st.markdown(
+    '<h2 class="section-title">Tim Pengembang</h2>',
+    unsafe_allow_html=True
 )
 
-st.info(
-    "Nama anggota dan pembagian kontribusi tim dapat "
-    "ditambahkan setelah disepakati bersama kelompok."
+st.markdown(
+    '<p class="section-description">'
+    'PadiPredict dikembangkan oleh Kelompok 19 '
+    'sebagai bagian dari proyek Pembelajaran Mesin.'
+    '</p>',
+    unsafe_allow_html=True
 )
+
+st.markdown("### Kelompok 19")
+
+col1, col2, col3 = st.columns(3)
+
+with col1:
+    st.markdown(
+        """
+        <div class="info-card">
+            <div class="info-label">Anggota 1</div>
+            <div class="info-value">Naiya Humaira Rusydi</div>
+            <div class="result-note">J0404241014</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+with col2:
+    st.markdown(
+        """
+        <div class="info-card">
+            <div class="info-label">Anggota 2</div>
+            <div class="info-value">Al Fariz Muhammad Zibril</div>
+            <div class="result-note">J0404241036</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
+
+with col3:
+    st.markdown(
+        """
+        <div class="info-card">
+            <div class="info-label">Anggota 3</div>
+            <div class="info-value">Naila Darussalamah</div>
+            <div class="result-note">J0404241059</div>
+        </div>
+        """,
+        unsafe_allow_html=True
+    )
 
 # ==========================================
 # 10. FOOTER
