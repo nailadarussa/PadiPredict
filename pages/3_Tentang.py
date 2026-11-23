@@ -1,6 +1,5 @@
-
-from pathlib import Path
 import streamlit as st
+from ui_helper import load_global_style
 
 # ==========================================
 # 1. KONFIGURASI HALAMAN
@@ -16,14 +15,7 @@ st.set_page_config(
 # 2. LOAD CSS
 # ==========================================
 
-ROOT_DIR = Path(__file__).resolve().parent.parent
-CSS_PATH = ROOT_DIR / "assets" / "styles" / "style.css"
-
-if CSS_PATH.exists():
-    st.markdown(
-        f"<style>{CSS_PATH.read_text(encoding='utf-8')}</style>",
-        unsafe_allow_html=True
-    )
+load_global_style()
 
 # ==========================================
 # 3. HEADER
@@ -124,10 +116,6 @@ st.divider()
 # 7. METODE MACHINE LEARNING
 # ==========================================
 
-# ==========================================
-# 7. METODE MACHINE LEARNING
-# ==========================================
-
 st.subheader("🤖 Metode Machine Learning")
 
 st.write(
@@ -189,7 +177,7 @@ st.warning(
 st.divider()
 
 # ==========================================
-# TIM PENGEMBANG
+# 9. TIM PENGEMBANG
 # ==========================================
 
 st.markdown("---")
