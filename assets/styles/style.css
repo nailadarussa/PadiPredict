@@ -12,9 +12,9 @@
     --text-main: #1A2E23;
     --text-muted: #4A6356;
 
-    --surface-card: rgba(255, 255, 255, 0.94);
-    --surface-sidebar: rgba(255, 255, 255, 0.97);
-    --border-soft: rgba(45, 106, 79, 0.18);
+    --surface-card: rgba(255, 255, 255, 0.95);
+    --surface-sidebar: rgba(255, 255, 255, 0.98);
+    --border-soft: rgba(45, 106, 79, 0.20);
     --shadow-card: 0 4px 16px rgba(27, 67, 50, 0.06);
 }
 
@@ -71,7 +71,7 @@ div[data-testid="stMainBlockContainer"],
 }
 
 header[data-testid="stHeader"] {
-    background: rgba(246, 249, 244, 0.75) !important;
+    background: rgba(246, 249, 244, 0.78) !important;
     backdrop-filter: blur(6px);
 }
 
@@ -271,7 +271,7 @@ div[data-testid="stVerticalBlockBorderWrapper"]:hover {
 }
 
 /* =========================================
-   FORM & INPUTS (HALAMAN PREDIKSI & FILTER)
+   FORM, INPUTS & DROPDOWN (ANTI DARK MODE)
 ========================================= */
 
 div[data-testid="stForm"] {
@@ -292,8 +292,48 @@ div[data-baseweb="textarea"] > div {
 }
 
 div[data-baseweb="input"] input,
-div[data-baseweb="textarea"] textarea {
+div[data-baseweb="textarea"] textarea,
+div[data-baseweb="select"] span {
     color: var(--text-main) !important;
+}
+
+/* Tombol +/- pada number_input */
+button[data-testid="stNumberInputStepDown"],
+button[data-testid="stNumberInputStepUp"] {
+    background-color: #F0F5F1 !important;
+    color: var(--primary-dark) !important;
+    border-color: rgba(45, 106, 79, 0.2) !important;
+}
+
+/* Popover & Daftar Pilihan Dropdown */
+div[data-baseweb="popover"],
+div[data-baseweb="popover"] > div,
+ul[role="listbox"] {
+    background-color: #FFFFFF !important;
+    color: var(--text-main) !important;
+    border: 1px solid var(--border-soft) !important;
+}
+
+li[role="option"] {
+    background-color: #FFFFFF !important;
+    color: var(--text-main) !important;
+}
+
+li[role="option"]:hover,
+li[role="option"][aria-selected="true"] {
+    background-color: #E8F3EC !important;
+    color: var(--primary-dark) !important;
+}
+
+/* Chip / Tag pada Multiselect */
+span[data-baseweb="tag"] {
+    background-color: #E3F1E8 !important;
+    color: var(--primary-dark) !important;
+    border: 1px solid rgba(45, 106, 79, 0.25) !important;
+}
+
+span[data-baseweb="tag"] span {
+    color: var(--primary-dark) !important;
 }
 
 /* =========================================
@@ -323,15 +363,45 @@ button[kind="secondaryFormSubmit"]:hover {
 }
 
 /* =========================================
-   ALERTS, EXPANDER & TABS
+   ALERTS (ST.INFO, ST.SUCCESS, ST.WARNING)
+   PERBAIKAN AGAR TIDAK GELAP DI DARK MODE
 ========================================= */
 
 div[data-testid="stAlert"] {
-    background-color: rgba(255, 255, 255, 0.95) !important;
+    background: transparent !important;
+    border: none !important;
+    padding: 0 !important;
+}
+
+div[data-testid="stAlertContainer"],
+div[role="alert"] {
+    background-color: #EDF6F0 !important;
+    color: var(--text-main) !important;
+    border: 1px solid rgba(45, 106, 79, 0.25) !important;
+    border-left: 5px solid var(--primary) !important;
     border-radius: 14px !important;
-    border: 1px solid var(--border-soft) !important;
+    padding: 16px 20px !important;
     box-shadow: 0 3px 12px rgba(27, 67, 50, 0.05) !important;
 }
+
+div[data-testid="stAlertContainer"] p,
+div[data-testid="stAlertContainer"] strong,
+div[data-testid="stAlertContainer"] li,
+div[role="alert"] p,
+div[role="alert"] strong,
+div[role="alert"] li {
+    color: var(--text-main) !important;
+}
+
+div[data-testid="stAlertContainer"] svg,
+div[role="alert"] svg {
+    fill: var(--primary) !important;
+    color: var(--primary) !important;
+}
+
+/* =========================================
+   EXPANDER, RADIO & TABS
+========================================= */
 
 div[data-testid="stExpander"] {
     background: var(--surface-card) !important;
@@ -345,8 +415,12 @@ div[data-testid="stExpander"] summary p {
     font-weight: 650 !important;
 }
 
+div[role="radiogroup"] label p {
+    color: var(--text-main) !important;
+}
+
 button[data-baseweb="tab"] {
-    background: rgba(255, 255, 255, 0.75) !important;
+    background: rgba(255, 255, 255, 0.82) !important;
     border-radius: 10px 10px 0 0 !important;
     padding: 8px 16px !important;
     color: var(--text-muted) !important;
