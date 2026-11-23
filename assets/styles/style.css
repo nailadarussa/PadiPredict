@@ -1,43 +1,38 @@
-
 /* =========================================
-   PADIPREDICT - ADAPTIVE DESIGN SYSTEM
-   Light Mode + Dark Mode + Rice Background
-========================================= */
-
-/* =========================================
-   THEME COLORS
+   PADIPREDICT - CLEAN AGRICULTURAL UI
+   High Readability + Soft Rice Background
 ========================================= */
 
 :root {
-    --primary: #347653;
-    --primary-light: #4B946B;
-    --primary-dark: #245B45;
-    --accent: #A5C98B;
+    --primary: #2D6A4F;
+    --primary-light: #40916C;
+    --primary-dark: #1B4332;
+    --accent: #74C69D;
 
-    --shadow:
-        0 4px 16px rgba(36, 91, 69, 0.08);
+    --text-main: #1A2E23;
+    --text-muted: #4A6356;
 
-    --border-color: rgba(128, 128, 128, 0.22);
+    --surface-card: rgba(255, 255, 255, 0.94);
+    --surface-sidebar: rgba(255, 255, 255, 0.97);
+    --border-soft: rgba(45, 106, 79, 0.18);
+    --shadow-card: 0 4px 16px rgba(27, 67, 50, 0.06);
 }
 
-
 /* =========================================
-   GLOBAL BACKGROUND - RICE FIELD
+   GLOBAL BACKGROUND - RICE FIELD (SAMAR)
 ========================================= */
 
-html, body {
-    background-color: var(--background-color, #F7F9F5);
-    color: var(--text-color, #26382E);
-    font-family: "Segoe UI", sans-serif;
+html, body, .stApp {
+    background-color: #F6F9F4 !important;
+    color: var(--text-main) !important;
+    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
 }
 
 .stApp {
     background: transparent !important;
-    color: var(--text-color, #26382E);
-    font-family: "Segoe UI", sans-serif;
 }
 
-/* Lapisan gambar sawah samar-samar */
+/* Lapisan gambar sawah dengan tint putih lembut agar teks kontras */
 .stApp::before {
     content: "";
     position: fixed;
@@ -45,16 +40,22 @@ html, body {
     z-index: 0;
     pointer-events: none;
 
-    background-image: url("BACKGROUND_IMAGE");
+    background-image:
+        linear-gradient(
+            180deg,
+            rgba(246, 249, 244, 0.83) 0%,
+            rgba(242, 247, 239, 0.87) 100%
+        ),
+        url("BACKGROUND_IMAGE");
+
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    opacity: 0.16; /* Atur 0.12 - 0.22 untuk tingkat kesamaran gambar */
 }
 
 /* Pastikan seluruh konten berada di atas gambar */
 div[data-testid="stAppViewContainer"],
-div[data-testid="stHeader"],
+header[data-testid="stHeader"],
 div[data-testid="stMain"],
 div[data-testid="stMainBlockContainer"],
 section[data-testid="stSidebar"] {
@@ -62,15 +63,20 @@ section[data-testid="stSidebar"] {
     z-index: 1;
 }
 
-/* Hilangkan latar solid yang menutupi background */
 div[data-testid="stAppViewContainer"],
 div[data-testid="stMain"],
 div[data-testid="stMainBlockContainer"],
 .main {
     background: transparent !important;
 }
+
+header[data-testid="stHeader"] {
+    background: rgba(246, 249, 244, 0.75) !important;
+    backdrop-filter: blur(6px);
+}
+
 /* =========================================
-   GLOBAL TEXT
+   TYPOGRAPHY (KONTRAS TINGGI)
 ========================================= */
 
 .stApp h1,
@@ -79,15 +85,21 @@ div[data-testid="stMainBlockContainer"],
 .stApp h4,
 .stApp h5,
 .stApp h6 {
-    color: var(--text-color) !important;
-    font-weight: 700;
+    color: var(--primary-dark) !important;
+    font-weight: 700 !important;
 }
 
 .stApp p,
 .stApp li,
-.stApp label {
-    color: var(--text-color);
+.stApp label,
+.stMarkdown {
+    color: var(--text-main) !important;
     line-height: 1.65;
+}
+
+.stCaption,
+small {
+    color: var(--text-muted) !important;
 }
 
 footer {
@@ -95,180 +107,193 @@ footer {
 }
 
 /* =========================================
+   SIDEBAR NAVIGASI
+========================================= */
+
+section[data-testid="stSidebar"] {
+    background: var(--surface-sidebar) !important;
+    border-right: 1px solid var(--border-soft) !important;
+    box-shadow: 2px 0 14px rgba(27, 67, 50, 0.05) !important;
+}
+
+div[data-testid="stSidebarNav"] {
+    padding-top: 1rem !important;
+}
+
+div[data-testid="stSidebarNav"] a {
+    border-radius: 10px !important;
+    margin: 3px 10px !important;
+    padding: 8px 14px !important;
+    transition: background-color 0.2s ease;
+}
+
+div[data-testid="stSidebarNav"] a:hover {
+    background-color: rgba(45, 106, 79, 0.08) !important;
+}
+
+div[data-testid="stSidebarNav"] a[aria-current="page"] {
+    background-color: rgba(45, 106, 79, 0.14) !important;
+    border-left: 4px solid var(--primary) !important;
+}
+
+div[data-testid="stSidebarNav"] span {
+    color: var(--primary-dark) !important;
+    font-weight: 600 !important;
+    font-size: 0.95rem !important;
+}
+
+div[data-testid="stSidebarNav"] a[aria-current="page"] span {
+    font-weight: 750 !important;
+}
+
+/* =========================================
    HERO SECTION
-   Dark green in both themes
 ========================================= */
 
 .hero {
-    background: linear-gradient(
-        125deg,
-        #194632,
-        #397B59
-    );
-
-    padding: 46px;
+    background: linear-gradient(135deg, #1B4332 0%, #2D6A4F 60%, #40916C 100%);
+    padding: 42px 46px;
     border-radius: 22px;
     color: #FFFFFF !important;
     margin-bottom: 28px;
-
-    box-shadow: 0 8px 25px rgba(36, 91, 69, 0.18);
+    box-shadow: 0 10px 28px rgba(27, 67, 50, 0.18);
 }
 
 .hero h1 {
     color: #FFFFFF !important;
-    font-size: 43px;
-    font-weight: 750;
-    margin-bottom: 12px;
+    font-size: 40px;
+    font-weight: 800 !important;
+    margin-bottom: 10px;
 }
 
 .hero p {
-    color: #E4F0E6 !important;
+    color: #E8F5EE !important;
     font-size: 16px;
-    line-height: 1.8;
+    line-height: 1.75;
+    margin-bottom: 6px;
 }
 
 /* =========================================
-   SECTION
-========================================= */
-
-.section-title {
-    color: var(--primary) !important;
-    font-size: 25px;
-    font-weight: 700;
-    margin-top: 25px;
-    margin-bottom: 18px;
-}
-
-.section-description {
-    color: var(--text-color) !important;
-    opacity: 0.8;
-    font-size: 14px;
-    margin-top: -10px;
-    margin-bottom: 20px;
-}
-
-/* =========================================
-   METRIC CARDS
+   METRIC CARDS (ANTI TERPOTONG)
 ========================================= */
 
 div[data-testid="stMetric"] {
-    background: var(--secondary-background-color);
-    color: var(--text-color);
-    padding: 21px;
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    box-shadow: var(--shadow);
+    background: var(--surface-card) !important;
+    border: 1px solid var(--border-soft) !important;
+    border-left: 5px solid var(--primary) !important;
+    border-radius: 16px !important;
+    padding: 18px 20px !important;
+    box-shadow: var(--shadow-card) !important;
 }
 
 div[data-testid="stMetricLabel"],
 div[data-testid="stMetricLabel"] p {
-    color: var(--text-color) !important;
-    opacity: 0.8;
+    color: var(--text-muted) !important;
+    font-size: 0.9rem !important;
+    font-weight: 600 !important;
 }
 
-div[data-testid="stMetricValue"] {
-    color: var(--primary) !important;
-    font-weight: 750;
+div[data-testid="stMetricValue"],
+div[data-testid="stMetricValue"] > div {
+    color: var(--primary-dark) !important;
+    font-size: 1.65rem !important;
+    font-weight: 750 !important;
+    line-height: 1.25 !important;
+    white-space: normal !important;
+    overflow: visible !important;
+    text-overflow: unset !important;
 }
 
 /* =========================================
-   INFORMATION CARDS
+   CONTAINER BER-BORDER (KARTU FITUR)
 ========================================= */
 
-.info-card {
-    background: var(--secondary-background-color);
-    color: var(--text-color);
-    border: 1px solid var(--border-color);
-    border-radius: 16px;
-    padding: 20px;
-    min-height: 105px;
-    margin-bottom: 12px;
-    box-shadow: var(--shadow);
+div[data-testid="stVerticalBlockBorderWrapper"] {
+    background: var(--surface-card) !important;
+    border: 1px solid var(--border-soft) !important;
+    border-radius: 16px !important;
+    padding: 20px !important;
+    box-shadow: var(--shadow-card) !important;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-.info-card h4 {
-    color: var(--primary) !important;
+div[data-testid="stVerticalBlockBorderWrapper"]:hover {
+    box-shadow: 0 8px 22px rgba(27, 67, 50, 0.1) !important;
+}
+
+/* =========================================
+   SECTION & CUSTOM INFO CARDS (TIM PENGEMBANG)
+========================================= */
+
+.section-title {
+    color: var(--primary-dark) !important;
+    font-size: 25px;
+    font-weight: 750;
+    margin-top: 20px;
+    margin-bottom: 12px;
+}
+
+.section-description {
+    color: var(--text-muted) !important;
+    font-size: 14px;
+    margin-bottom: 20px;
+}
+
+.info-card {
+    background: var(--surface-card);
+    border: 1px solid var(--border-soft);
+    border-top: 4px solid var(--primary);
+    border-radius: 16px;
+    padding: 20px;
+    min-height: 110px;
+    margin-bottom: 12px;
+    box-shadow: var(--shadow-card);
 }
 
 .info-label {
-    color: var(--text-color) !important;
-    opacity: 0.75;
+    color: var(--text-muted) !important;
     font-size: 13px;
-    margin-bottom: 10px;
+    font-weight: 600;
+    margin-bottom: 8px;
 }
 
 .info-value {
-    color: var(--primary) !important;
-    font-size: 20px;
-    font-weight: 700;
+    color: var(--primary-dark) !important;
+    font-size: 19px;
+    font-weight: 750;
     overflow-wrap: anywhere;
 }
 
 .info-card .result-note {
-    color: var(--text-color) !important;
-    opacity: 0.75;
+    color: var(--text-muted) !important;
     font-size: 13px;
-    margin-top: 8px;
+    margin-top: 6px;
 }
 
 /* =========================================
-   PREDICTION RESULT
-   Dark green in both themes
+   FORM & INPUTS (HALAMAN PREDIKSI & FILTER)
 ========================================= */
 
-.result-card {
-    background: linear-gradient(
-        125deg,
-        #194632,
-        #397B59
-    );
-
-    padding: 32px;
-    border-radius: 20px;
-    color: #FFFFFF !important;
-    min-height: 235px;
-    margin-top: 15px;
-    margin-bottom: 20px;
-
-    box-shadow: 0 8px 24px rgba(31, 81, 61, 0.18);
+div[data-testid="stForm"] {
+    background: var(--surface-card) !important;
+    border: 1px solid var(--border-soft) !important;
+    border-radius: 18px !important;
+    padding: 24px !important;
+    box-shadow: var(--shadow-card) !important;
 }
 
-.result-card h3 {
-    color: #E4F0E6 !important;
-    font-size: 17px;
+div[data-baseweb="input"] > div,
+div[data-baseweb="select"] > div,
+div[data-baseweb="textarea"] > div {
+    background-color: #FFFFFF !important;
+    border-color: rgba(45, 106, 79, 0.28) !important;
+    border-radius: 10px !important;
+    color: var(--text-main) !important;
 }
 
-.result-label {
-    color: #D8EBDD !important;
-    font-size: 14px;
-    font-weight: 500;
-}
-
-.result-value {
-    color: #FFFFFF !important;
-    font-size: 46px;
-    font-weight: 750;
-    margin-top: 22px;
-    margin-bottom: 5px;
-}
-
-.result-unit {
-    color: #E2F0E5 !important;
-    font-size: 14px;
-}
-
-.result-card .result-note,
-.result-card .result-description {
-    color: #D8EBDD !important;
-    font-size: 13px;
-    margin-top: 20px;
-}
-
-.result-heading {
-    color: var(--primary) !important;
-    font-size: 24px;
-    font-weight: 700;
-    margin-bottom: 18px;
+div[data-baseweb="input"] input,
+div[data-baseweb="textarea"] textarea {
+    color: var(--text-main) !important;
 }
 
 /* =========================================
@@ -276,164 +301,105 @@ div[data-testid="stMetricValue"] {
 ========================================= */
 
 .stButton button,
-.stDownloadButton button {
-    background-color: var(--primary);
+.stDownloadButton button,
+button[kind="primaryFormSubmit"],
+button[kind="secondaryFormSubmit"] {
+    background-color: var(--primary) !important;
     color: #FFFFFF !important;
-    border: 1px solid var(--primary);
-    border-radius: 11px;
-    padding: 10px 22px;
-    font-weight: 650;
+    border: 1px solid var(--primary) !important;
+    border-radius: 11px !important;
+    padding: 10px 22px !important;
+    font-weight: 650 !important;
     transition: 0.2s ease;
 }
 
 .stButton button:hover,
-.stDownloadButton button:hover {
-    background-color: var(--primary-light);
+.stDownloadButton button:hover,
+button[kind="primaryFormSubmit"]:hover,
+button[kind="secondaryFormSubmit"]:hover {
+    background-color: var(--primary-light) !important;
+    border-color: var(--primary-light) !important;
     color: #FFFFFF !important;
-    border-color: var(--primary-light);
 }
 
 /* =========================================
-   INPUTS
-========================================= */
-
-div[data-baseweb="input"],
-div[data-baseweb="select"],
-div[data-baseweb="textarea"] {
-    border-radius: 10px;
-}
-
-.stTextInput label,
-.stNumberInput label,
-.stSelectbox label,
-.stMultiSelect label,
-.stDateInput label,
-.stTextArea label {
-    color: var(--text-color) !important;
-    font-weight: 600;
-}
-
-div[data-baseweb="input"] input,
-div[data-baseweb="textarea"] textarea {
-    color: var(--text-color) !important;
-}
-
-div[data-baseweb="select"] > div {
-    background: var(--secondary-background-color);
-    color: var(--text-color);
-}
-
-/* =========================================
-   SIDEBAR
-========================================= */
-
-section[data-testid="stSidebar"] {
-    background: var(--secondary-background-color);
-    border-right: 1px solid var(--border-color);
-}
-
-section[data-testid="stSidebar"] h1,
-section[data-testid="stSidebar"] h2,
-section[data-testid="stSidebar"] h3 {
-    color: var(--primary) !important;
-}
-
-section[data-testid="stSidebar"] p,
-section[data-testid="stSidebar"] span,
-section[data-testid="stSidebar"] label {
-    color: var(--text-color);
-}
-
-/* =========================================
-   ALERTS
+   ALERTS, EXPANDER & TABS
 ========================================= */
 
 div[data-testid="stAlert"] {
-    border-radius: 12px;
+    background-color: rgba(255, 255, 255, 0.95) !important;
+    border-radius: 14px !important;
+    border: 1px solid var(--border-soft) !important;
+    box-shadow: 0 3px 12px rgba(27, 67, 50, 0.05) !important;
 }
-
-/* =========================================
-   EXPANDER
-========================================= */
 
 div[data-testid="stExpander"] {
-    background: var(--secondary-background-color);
-    border: 1px solid var(--border-color);
-    border-radius: 13px;
+    background: var(--surface-card) !important;
+    border: 1px solid var(--border-soft) !important;
+    border-radius: 14px !important;
+    box-shadow: var(--shadow-card) !important;
 }
 
-div[data-testid="stExpander"] summary,
 div[data-testid="stExpander"] summary p {
-    color: var(--text-color) !important;
+    color: var(--primary-dark) !important;
+    font-weight: 650 !important;
+}
+
+button[data-baseweb="tab"] {
+    background: rgba(255, 255, 255, 0.75) !important;
+    border-radius: 10px 10px 0 0 !important;
+    padding: 8px 16px !important;
+    color: var(--text-muted) !important;
+    font-weight: 600 !important;
+}
+
+button[data-baseweb="tab"][aria-selected="true"] {
+    background: #FFFFFF !important;
+    color: var(--primary-dark) !important;
+    font-weight: 750 !important;
 }
 
 /* =========================================
-   TABLE & DATAFRAME
+   DATAFRAME / TABEL & GRAFIK PLOTLY
 ========================================= */
 
 div[data-testid="stDataFrame"],
 div[data-testid="stTable"] {
-    color: var(--text-color);
+    background: #FFFFFF !important;
+    border: 1px solid rgba(45, 106, 79, 0.22) !important;
+    border-radius: 14px !important;
+    padding: 6px !important;
+    box-shadow: var(--shadow-card) !important;
+    overflow: hidden !important;
+}
+
+div[data-testid="stPlotlyChart"] {
+    background: #FFFFFF !important;
+    border: 1px solid var(--border-soft) !important;
+    border-radius: 16px !important;
+    padding: 12px !important;
+    box-shadow: var(--shadow-card) !important;
 }
 
 /* =========================================
-   TABS
-========================================= */
-
-button[data-baseweb="tab"] {
-    color: var(--text-color) !important;
-}
-
-button[data-baseweb="tab"][aria-selected="true"] {
-    color: var(--primary) !important;
-}
-
-/* =========================================
-   LINKS
-========================================= */
-
-.stApp a {
-    color: var(--primary-light);
-}
-
-.stApp a:hover {
-    color: var(--primary);
-}
-
-/* =========================================
-   DIVIDER
+   DIVIDER & RESPONSIVE
 ========================================= */
 
 hr {
-    border-color: var(--border-color);
+    border-color: rgba(45, 106, 79, 0.16) !important;
 }
 
-/* =========================================
-   RESPONSIVE
-========================================= */
-
 @media (max-width: 768px) {
-    .block-container {
-        padding-top: 1rem;
-        padding-left: 1rem;
-        padding-right: 1rem;
-    }
-
     .hero {
         padding: 26px;
     }
 
     .hero h1 {
-        font-size: 32px;
+        font-size: 30px;
     }
 
-    .result-value {
-        font-size: 36px;
-    }
-
-    .info-value {
-        font-size: 17px;
+    div[data-testid="stMetricValue"],
+    div[data-testid="stMetricValue"] > div {
+        font-size: 1.4rem !important;
     }
 }
-
-
