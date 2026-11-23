@@ -1,28 +1,17 @@
 /* =========================================
    PADIPREDICT - ADAPTIVE DESIGN SYSTEM
-   Mendukung System / Light / Dark Mode
+   Otomatis Mendukung System / Light / Dark
 ========================================= */
 
 :root {
     --primary: #2D6A4F;
-    --primary-light: #52B788;
-    --accent-text: color-mix(in srgb, #2D6A4F 65%, var(--text-color));
-    --card-bg: color-mix(in srgb, var(--secondary-background-color) 92%, transparent);
-    --border-soft: color-mix(in srgb, var(--text-color) 16%, transparent);
-    --shadow-card: 0 4px 16px rgba(0, 0, 0, 0.08);
+    --primary-accent: #389E6B;
 }
 
 /* =========================================
-   GLOBAL BACKGROUND - RICE FIELD (ADAPTIF)
+   GLOBAL BACKGROUND - RICE FIELD (SAMAR)
 ========================================= */
 
-.stApp {
-    background: transparent !important;
-    color: var(--text-color) !important;
-    font-family: "Segoe UI", -apple-system, BlinkMacSystemFont, sans-serif;
-}
-
-/* Lapisan gambar sawah otomatis mengikuti latar Light / Dark */
 .stApp::before {
     content: "";
     position: fixed;
@@ -30,17 +19,11 @@
     z-index: 0;
     pointer-events: none;
 
-    background-image:
-        linear-gradient(
-            180deg,
-            color-mix(in srgb, var(--background-color) 84%, transparent) 0%,
-            color-mix(in srgb, var(--background-color) 88%, transparent) 100%
-        ),
-        url("BACKGROUND_IMAGE");
-
+    background-image: url("BACKGROUND_IMAGE");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    opacity: 0.14;
 }
 
 div[data-testid="stAppViewContainer"],
@@ -59,75 +42,8 @@ div[data-testid="stMainBlockContainer"],
     background: transparent !important;
 }
 
-header[data-testid="stHeader"] {
-    background: color-mix(in srgb, var(--background-color) 75%, transparent) !important;
-    backdrop-filter: blur(6px);
-}
-
-/* =========================================
-   TYPOGRAPHY
-========================================= */
-
-.stApp h1,
-.stApp h2,
-.stApp h3,
-.stApp h4,
-.stApp h5,
-.stApp h6 {
-    color: var(--text-color) !important;
-    font-weight: 700 !important;
-}
-
-.stApp p,
-.stApp li,
-.stApp label,
-.stMarkdown {
-    color: var(--text-color) !important;
-    line-height: 1.65;
-}
-
-.stCaption,
-small {
-    color: color-mix(in srgb, var(--text-color) 72%, transparent) !important;
-}
-
 footer {
     visibility: hidden;
-}
-
-/* =========================================
-   SIDEBAR NAVIGASI
-========================================= */
-
-section[data-testid="stSidebar"] {
-    background: color-mix(in srgb, var(--secondary-background-color) 96%, transparent) !important;
-    border-right: 1px solid var(--border-soft) !important;
-}
-
-div[data-testid="stSidebarNav"] {
-    padding-top: 1rem !important;
-}
-
-div[data-testid="stSidebarNav"] a {
-    border-radius: 10px !important;
-    margin: 3px 10px !important;
-    padding: 8px 14px !important;
-    transition: background-color 0.2s ease;
-}
-
-div[data-testid="stSidebarNav"] a:hover {
-    background-color: color-mix(in srgb, var(--primary) 14%, transparent) !important;
-}
-
-div[data-testid="stSidebarNav"] a[aria-current="page"] {
-    background-color: color-mix(in srgb, var(--primary) 20%, transparent) !important;
-    border-left: 4px solid var(--primary) !important;
-}
-
-div[data-testid="stSidebarNav"] span {
-    color: var(--text-color) !important;
-    font-weight: 600 !important;
-    font-size: 0.95rem !important;
 }
 
 /* =========================================
@@ -140,7 +56,7 @@ div[data-testid="stSidebarNav"] span {
     border-radius: 22px;
     color: #FFFFFF !important;
     margin-bottom: 28px;
-    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.16);
 }
 
 .hero h1 {
@@ -162,24 +78,17 @@ div[data-testid="stSidebarNav"] span {
 ========================================= */
 
 div[data-testid="stMetric"] {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--border-soft) !important;
-    border-left: 5px solid var(--primary) !important;
+    background-color: rgba(128, 128, 128, 0.08) !important;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(128, 128, 128, 0.22) !important;
+    border-left: 5px solid var(--primary-accent) !important;
     border-radius: 16px !important;
     padding: 18px 20px !important;
-    box-shadow: var(--shadow-card) !important;
-}
-
-div[data-testid="stMetricLabel"],
-div[data-testid="stMetricLabel"] p {
-    color: color-mix(in srgb, var(--text-color) 75%, transparent) !important;
-    font-size: 0.9rem !important;
-    font-weight: 600 !important;
 }
 
 div[data-testid="stMetricValue"],
 div[data-testid="stMetricValue"] > div {
-    color: var(--accent-text) !important;
+    color: var(--primary-accent) !important;
     font-size: 1.65rem !important;
     font-weight: 750 !important;
     line-height: 1.25 !important;
@@ -189,19 +98,25 @@ div[data-testid="stMetricValue"] > div {
 }
 
 /* =========================================
-   CONTAINER BER-BORDER & KARTU TIM
+   CONTAINER, FORM & KARTU TIM
 ========================================= */
 
-div[data-testid="stVerticalBlockBorderWrapper"] {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--border-soft) !important;
+div[data-testid="stVerticalBlockBorderWrapper"],
+div[data-testid="stForm"],
+div[data-testid="stExpander"] {
+    background-color: rgba(128, 128, 128, 0.07) !important;
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(128, 128, 128, 0.22) !important;
     border-radius: 16px !important;
+}
+
+div[data-testid="stVerticalBlockBorderWrapper"],
+div[data-testid="stForm"] {
     padding: 20px !important;
-    box-shadow: var(--shadow-card) !important;
 }
 
 .section-title {
-    color: var(--accent-text) !important;
+    color: var(--primary-accent) !important;
     font-size: 25px;
     font-weight: 750;
     margin-top: 20px;
@@ -209,67 +124,40 @@ div[data-testid="stVerticalBlockBorderWrapper"] {
 }
 
 .section-description {
-    color: color-mix(in srgb, var(--text-color) 75%, transparent) !important;
+    opacity: 0.8;
     font-size: 14px;
     margin-bottom: 20px;
 }
 
 .info-card {
-    background: var(--card-bg);
-    border: 1px solid var(--border-soft);
-    border-top: 4px solid var(--primary);
+    background-color: rgba(128, 128, 128, 0.08);
+    backdrop-filter: blur(8px);
+    border: 1px solid rgba(128, 128, 128, 0.22);
+    border-top: 4px solid var(--primary-accent);
     border-radius: 16px;
     padding: 20px;
     min-height: 110px;
     margin-bottom: 12px;
-    box-shadow: var(--shadow-card);
 }
 
 .info-label {
-    color: color-mix(in srgb, var(--text-color) 72%, transparent) !important;
+    opacity: 0.75;
     font-size: 13px;
     font-weight: 600;
     margin-bottom: 8px;
 }
 
 .info-value {
-    color: var(--accent-text) !important;
+    color: var(--primary-accent) !important;
     font-size: 19px;
     font-weight: 750;
     overflow-wrap: anywhere;
 }
 
 .info-card .result-note {
-    color: color-mix(in srgb, var(--text-color) 72%, transparent) !important;
+    opacity: 0.75;
     font-size: 13px;
     margin-top: 6px;
-}
-
-/* =========================================
-   FORM & INPUTS
-========================================= */
-
-div[data-testid="stForm"] {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--border-soft) !important;
-    border-radius: 18px !important;
-    padding: 24px !important;
-    box-shadow: var(--shadow-card) !important;
-}
-
-div[data-baseweb="input"] > div,
-div[data-baseweb="select"] > div,
-div[data-baseweb="textarea"] > div {
-    background-color: var(--secondary-background-color) !important;
-    border-color: var(--border-soft) !important;
-    border-radius: 10px !important;
-    color: var(--text-color) !important;
-}
-
-div[data-baseweb="input"] input,
-div[data-baseweb="textarea"] textarea,
-div[data-baseweb="select"] span {
-    color: var(--text-color) !important;
 }
 
 /* =========================================
@@ -299,74 +187,20 @@ button[kind="secondaryFormSubmit"]:hover {
 }
 
 /* =========================================
-   ALERTS (ST.INFO, ST.SUCCESS, ST.WARNING)
+   ALERTS, DATAFRAME & CHARTS
 ========================================= */
-
-div[data-testid="stAlert"] {
-    background: transparent !important;
-    border: none !important;
-    padding: 0 !important;
-}
 
 div[data-testid="stAlertContainer"],
 div[role="alert"] {
-    background-color: color-mix(in srgb, var(--secondary-background-color) 92%, #2D6A4F 8%) !important;
-    color: var(--text-color) !important;
-    border: 1px solid var(--border-soft) !important;
-    border-left: 5px solid var(--primary) !important;
     border-radius: 14px !important;
-    padding: 16px 20px !important;
-    box-shadow: var(--shadow-card) !important;
-}
-
-div[data-testid="stAlertContainer"] p,
-div[data-testid="stAlertContainer"] strong,
-div[data-testid="stAlertContainer"] li,
-div[role="alert"] p,
-div[role="alert"] strong,
-div[role="alert"] li {
-    color: var(--text-color) !important;
-}
-
-/* =========================================
-   EXPANDER, TABS, DATAFRAME & PLOTLY
-========================================= */
-
-div[data-testid="stExpander"] {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--border-soft) !important;
-    border-radius: 14px !important;
-}
-
-button[data-baseweb="tab"] {
-    background: color-mix(in srgb, var(--secondary-background-color) 75%, transparent) !important;
-    border-radius: 10px 10px 0 0 !important;
-    padding: 8px 16px !important;
-    color: var(--text-color) !important;
-}
-
-button[data-baseweb="tab"][aria-selected="true"] {
-    background: var(--secondary-background-color) !important;
-    color: var(--accent-text) !important;
-    font-weight: 750 !important;
 }
 
 div[data-testid="stDataFrame"],
-div[data-testid="stTable"] {
-    border: 1px solid var(--border-soft) !important;
+div[data-testid="stTable"],
+div[data-testid="stPlotlyChart"] {
+    border: 1px solid rgba(128, 128, 128, 0.22) !important;
     border-radius: 14px !important;
     overflow: hidden !important;
-}
-
-div[data-testid="stPlotlyChart"] {
-    background: var(--card-bg) !important;
-    border: 1px solid var(--border-soft) !important;
-    border-radius: 16px !important;
-    padding: 12px !important;
-}
-
-hr {
-    border-color: var(--border-soft) !important;
 }
 
 @media (max-width: 768px) {
