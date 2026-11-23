@@ -20,49 +20,60 @@
     --border-color: rgba(128, 128, 128, 0.22);
 }
 
+
 /* =========================================
-   GLOBAL BACKGROUND
+   GLOBAL BACKGROUND - RICE FIELD
 ========================================= */
 
+/* Background utama */
 .stApp {
-    background: var(--background-color, #F7F9F5);
+    background-color: var(--background-color, #F7F9F5) !important;
     color: var(--text-color, #26382E);
     font-family: "Segoe UI", sans-serif;
 }
 
-/* Rice field background with adaptive overlay */
+/* Lapisan gambar sawah */
 div[data-testid="stAppViewContainer"] {
+    position: relative;
+    background: transparent !important;
+}
+
+/* Gambar dibuat sebagai lapisan terpisah */
+div[data-testid="stAppViewContainer"]::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+
     background-image:
         linear-gradient(
-            color-mix(
-                in srgb,
-                var(--background-color, #F7F9F5) 89%,
-                transparent
-            ),
-            color-mix(
-                in srgb,
-                var(--background-color, #F7F9F5) 89%,
-                transparent
-            )
+            rgba(247, 249, 245, 0.86),
+            rgba(247, 249, 245, 0.86)
         ),
         url("BACKGROUND_IMAGE");
 
     background-size: cover;
-    background-position: center center;
+    background-position: center;
     background-repeat: no-repeat;
-    background-attachment: fixed;
 }
 
-/* Keep main content transparent */
-div[data-testid="stMain"] {
-    background: transparent;
+/* Pastikan konten berada di atas gambar */
+div[data-testid="stHeader"],
+div[data-testid="stMain"],
+div[data-testid="stMainBlockContainer"],
+section[data-testid="stSidebar"] {
+    position: relative;
+    z-index: 1;
 }
 
-.block-container {
-    max-width: 1250px;
-    padding-top: 2.2rem;
-    padding-bottom: 3rem;
+/* Hilangkan latar putih yang menutupi background */
+div[data-testid="stMain"],
+div[data-testid="stMainBlockContainer"],
+.main {
+    background: transparent !important;
 }
+
 
 /* =========================================
    GLOBAL TEXT
@@ -428,5 +439,21 @@ hr {
 
     .info-value {
         font-size: 17px;
+    }
+}
+
+
+/* =========================================
+   DARK MODE BACKGROUND
+========================================= */
+
+@media (prefers-color-scheme: dark) {
+    div[data-testid="stAppViewContainer"]::before {
+        background-image:
+            linear-gradient(
+                rgba(15, 28, 20, 0.87),
+                rgba(15, 28, 20, 0.87)
+            ),
+            url("BACKGROUND_IMAGE");
     }
 }
