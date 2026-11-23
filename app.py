@@ -194,8 +194,8 @@ with col3:
     st.write(
         """
         Dapatkan estimasi produktivitas padi
-        setelah model Machine Learning
-        terintegrasi.
+        secara instan berdasarkan perhitungan
+        model Machine Learning.
         """
     )
 
@@ -218,21 +218,20 @@ col1, col2, col3 = st.columns(3)
 
 with col1:
     st.markdown("**Linear Regression**")
-    st.caption("Model regresi linear sebagai baseline.")
+    st.caption("Model regresi linear sebagai model utama.")
 
 with col2:
     st.markdown("**Decision Tree Regressor**")
-    st.caption("Model berbasis struktur pohon keputusan.")
+    st.caption("Model pembanding berbasis pohon keputusan.")
 
 with col3:
     st.markdown("**Random Forest Regressor**")
-    st.caption("Ensemble dari beberapa pohon keputusan.")
+    st.caption("Model pembanding berbasis ensemble pohon keputusan.")
 
-st.info(
-    "Hasil prediksi akan tersedia setelah integrasi "
-    "model Machine Learning dengan backend selesai."
+st.success(
+    "Model **Linear Regression** telah terintegrasi dan siap digunakan. "
+    "Pilih halaman **Prediksi** di menu sebelah kiri untuk mulai menghitung estimasi."
 )
-
 # ==========================================
 # 9. FOOTER
 # ==========================================
