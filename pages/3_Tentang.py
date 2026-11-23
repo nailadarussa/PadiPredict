@@ -189,7 +189,7 @@ st.warning(
 st.divider()
 
 # ==========================================
-# 9. TIM PENGEMBANG
+# TIM PENGEMBANG
 # ==========================================
 
 st.markdown("---")
