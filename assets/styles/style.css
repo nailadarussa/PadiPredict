@@ -443,17 +443,3 @@ hr {
 }
 
 
-/* =========================================
-   DARK MODE BACKGROUND
-========================================= */
-
-@media (prefers-color-scheme: dark) {
-    div[data-testid="stAppViewContainer"]::before {
-        background-image:
-            linear-gradient(
-                rgba(15, 28, 20, 0.87),
-                rgba(15, 28, 20, 0.87)
-            ),
-            url("BACKGROUND_IMAGE");
-    }
-}
