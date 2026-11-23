@@ -1,8 +1,9 @@
-
 from pathlib import Path
 import streamlit as st
 import pandas as pd
 import joblib
+from ui_helper import load_global_style
+
 # ==========================================
 # 1. KONFIGURASI HALAMAN
 # ==========================================
@@ -14,24 +15,21 @@ st.set_page_config(
 )
 
 # ==========================================
-# 2. LOAD CSS
+# 2. LOAD CSS & MODEL
 # ==========================================
 
-ROOT_DIR = Path(__file__).resolve().parent.parent
-CSS_PATH = ROOT_DIR / "assets" / "styles" / "style.css"
+load_global_style()
 
-@st.cache_resource
+ROOT_DIR = Path(__file__).resolve().parent.parent
+
+
+@st.cache_resource(show_spinner=False)
 def load_model():
     model_path = ROOT_DIR / "model_prediksi_padi_final_best.pkl"
     return joblib.load(model_path)
 
-model = load_model()
 
-if CSS_PATH.exists():
-    st.markdown(
-        f"<style>{CSS_PATH.read_text(encoding='utf-8')}</style>",
-        unsafe_allow_html=True
-    )
+model = load_model()
 
 # ==========================================
 # 3. DATA KECAMATAN
@@ -127,9 +125,8 @@ with st.form("form_prediksi"):
 
     submit = st.form_submit_button(
         "🌱 Prediksi Produktivitas",
-        use_container_width=True
+        width="stretch"
     )
-
 
 # ==========================================
 # 5A. VALIDASI INPUT AGROKLIMAT
@@ -147,7 +144,6 @@ if submit:
     parameter_di_luar = []
 
     for nama, (minimum, maksimum, nilai) in rentang_data.items():
-
         if nilai < minimum or nilai > maksimum:
             parameter_di_luar.append(
                 f"{nama}: {nilai} "
@@ -155,7 +151,6 @@ if submit:
             )
 
     if parameter_di_luar:
-
         st.warning(
             "Beberapa parameter berada di luar rentang "
             "data historis penelitian:\n\n"
@@ -164,8 +159,6 @@ if submit:
             )
             + "\n\nMohon perhatikan interpretasi hasil prediksi."
         )
-
-
 
 # ==========================================
 # 6. HASIL PREDIKSI
@@ -245,7 +238,6 @@ if submit:
 
         # INFORMASI WILAYAH
         with col_location:
-
             st.metric(
                 label="📍 Kecamatan",
                 value=kecamatan
@@ -283,13 +275,11 @@ if submit:
         st.error(f"Terjadi kesalahan saat melakukan prediksi: {e}")
 
 else:
-
     st.info(
         "🌱 Silakan lengkapi formulir di atas dan tekan "
         "tombol Prediksi Produktivitas untuk melihat "
         "hasil estimasi."
     )
-
 
 # ==========================================
 # 7. FOOTER
