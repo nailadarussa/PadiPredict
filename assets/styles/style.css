@@ -25,40 +25,35 @@
    GLOBAL BACKGROUND - RICE FIELD
 ========================================= */
 
-/* Background utama */
-.stApp {
-    background-color: var(--background-color, #F7F9F5) !important;
+html, body {
+    background-color: var(--background-color, #F7F9F5);
     color: var(--text-color, #26382E);
     font-family: "Segoe UI", sans-serif;
 }
 
-/* Lapisan gambar sawah */
-div[data-testid="stAppViewContainer"] {
-    position: relative;
+.stApp {
     background: transparent !important;
+    color: var(--text-color, #26382E);
+    font-family: "Segoe UI", sans-serif;
 }
 
-/* Gambar dibuat sebagai lapisan terpisah */
-div[data-testid="stAppViewContainer"]::before {
+/* Lapisan gambar sawah samar-samar */
+.stApp::before {
     content: "";
     position: fixed;
     inset: 0;
     z-index: 0;
     pointer-events: none;
 
-    background-image:
-        linear-gradient(
-            rgba(247, 249, 245, 0.86),
-            rgba(247, 249, 245, 0.86)
-        ),
-        url("BACKGROUND_IMAGE");
-
+    background-image: url("BACKGROUND_IMAGE");
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    opacity: 0.16; /* Atur 0.12 - 0.22 untuk tingkat kesamaran gambar */
 }
 
-/* Pastikan konten berada di atas gambar */
+/* Pastikan seluruh konten berada di atas gambar */
+div[data-testid="stAppViewContainer"],
 div[data-testid="stHeader"],
 div[data-testid="stMain"],
 div[data-testid="stMainBlockContainer"],
@@ -67,14 +62,13 @@ section[data-testid="stSidebar"] {
     z-index: 1;
 }
 
-/* Hilangkan latar putih yang menutupi background */
+/* Hilangkan latar solid yang menutupi background */
+div[data-testid="stAppViewContainer"],
 div[data-testid="stMain"],
 div[data-testid="stMainBlockContainer"],
 .main {
     background: transparent !important;
 }
-
-
 /* =========================================
    GLOBAL TEXT
 ========================================= */
