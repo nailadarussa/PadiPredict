@@ -254,9 +254,6 @@ st.info(
 st.divider()
 
 st.caption(
-    "🌾 PadiPredict | Smart Agriculture & Machine Learning"
+    "PadiPredict | SKelompok 19 Machine Learning"
 )
 
-st.caption(
-    "Proyek Pembelajaran Mesin | Kabupaten Malang"
-)

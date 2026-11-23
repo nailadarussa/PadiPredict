@@ -649,5 +649,5 @@ with st.expander("📋 Lihat Data yang Digunakan"):
 st.divider()
 
 st.caption(
-    "PadiPredict | Data Exploration & Visualization"
+    "PadiPredict | Kelompok 19 Machine Learning"
 )

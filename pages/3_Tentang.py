@@ -213,5 +213,5 @@ st.info(
 st.divider()
 
 st.caption(
-    "🌾 PadiPredict | Smart Agriculture & Machine Learning"
+    "PadiPredict | Kelompok 19 Machine Learning"
 )

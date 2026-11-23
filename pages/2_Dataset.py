@@ -142,5 +142,5 @@ st.info(
 st.divider()
 
 st.caption(
-    "PadiPredict | Dataset & Research Information"
+    "PadiPredict | Kelompok 19 Machine Learning"
 )
