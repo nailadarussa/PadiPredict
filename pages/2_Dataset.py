@@ -1,7 +1,6 @@
-
-from pathlib import Path
 import streamlit as st
 import pandas as pd
+from ui_helper import load_global_style
 
 st.set_page_config(
     page_title="Dataset | PadiPredict",
@@ -10,14 +9,7 @@ st.set_page_config(
 )
 
 # LOAD CSS
-ROOT_DIR = Path(__file__).resolve().parent.parent
-CSS_PATH = ROOT_DIR / "assets" / "styles" / "style.css"
-
-if CSS_PATH.exists():
-    st.markdown(
-        f"<style>{CSS_PATH.read_text(encoding='utf-8')}</style>",
-        unsafe_allow_html=True
-    )
+load_global_style()
 
 # HEADER
 st.title("📊 Dataset Penelitian")
@@ -101,7 +93,7 @@ data_variabel = pd.DataFrame({
 
 st.dataframe(
     data_variabel,
-    use_container_width=True,
+    width="stretch",
     hide_index=True
 )
 
@@ -135,8 +127,8 @@ with col2:
     st.write("RATA-RATA PRODUKSI")
 
 st.info(
-   "LUAS PANEN dan PRODUKSI digunakan untuk analisis "
-"eksploratif, bukan sebagai fitur input model prediksi."
+    "LUAS PANEN dan PRODUKSI digunakan untuk analisis "
+    "eksploratif, bukan sebagai fitur input model prediksi."
 )
 
 st.divider()
