@@ -1,35 +1,61 @@
 
 /* =========================================
-   PADIPREDICT - GLOBAL DESIGN SYSTEM
+   PADIPREDICT - ADAPTIVE DESIGN SYSTEM
+   Light Mode + Dark Mode + Rice Background
+========================================= */
+
+/* =========================================
+   THEME COLORS
 ========================================= */
 
 :root {
-    --primary: #245B45;
-    --primary-light: #397B59;
-    --primary-dark: #194632;
+    --primary: #347653;
+    --primary-light: #4B946B;
+    --primary-dark: #245B45;
     --accent: #A5C98B;
 
-    --background: #F7F9F5;
-    --surface: #FFFFFF;
-    --surface-soft: #EDF3EA;
-
-    --text: #26382E;
-    --text-muted: #718174;
-
-    --border: #E3EADF;
-
     --shadow:
-        0 4px 16px rgba(36, 91, 69, 0.06);
+        0 4px 16px rgba(36, 91, 69, 0.08);
+
+    --border-color: rgba(128, 128, 128, 0.22);
 }
 
 /* =========================================
-   GLOBAL
+   GLOBAL BACKGROUND
 ========================================= */
 
 .stApp {
-    background-color: var(--background);
-    color: var(--text);
+    background: var(--background-color, #F7F9F5);
+    color: var(--text-color, #26382E);
     font-family: "Segoe UI", sans-serif;
+}
+
+/* Rice field background with adaptive overlay */
+div[data-testid="stAppViewContainer"] {
+    background-image:
+        linear-gradient(
+            color-mix(
+                in srgb,
+                var(--background-color, #F7F9F5) 89%,
+                transparent
+            ),
+            color-mix(
+                in srgb,
+                var(--background-color, #F7F9F5) 89%,
+                transparent
+            )
+        ),
+        url("BACKGROUND_IMAGE");
+
+    background-size: cover;
+    background-position: center center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
+
+/* Keep main content transparent */
+div[data-testid="stMain"] {
+    background: transparent;
 }
 
 .block-container {
@@ -38,13 +64,25 @@
     padding-bottom: 3rem;
 }
 
-h1, h2, h3, h4 {
-    color: var(--primary-dark);
+/* =========================================
+   GLOBAL TEXT
+========================================= */
+
+.stApp h1,
+.stApp h2,
+.stApp h3,
+.stApp h4,
+.stApp h5,
+.stApp h6 {
+    color: var(--text-color) !important;
     font-weight: 700;
 }
 
-p {
-    line-height: 1.7;
+.stApp p,
+.stApp li,
+.stApp label {
+    color: var(--text-color);
+    line-height: 1.65;
 }
 
 footer {
@@ -52,34 +90,34 @@ footer {
 }
 
 /* =========================================
-   HERO
+   HERO SECTION
+   Dark green in both themes
 ========================================= */
 
 .hero {
     background: linear-gradient(
         125deg,
-        var(--primary-dark),
-        var(--primary-light)
+        #194632,
+        #397B59
     );
 
     padding: 46px;
     border-radius: 22px;
-    color: white;
+    color: #FFFFFF !important;
     margin-bottom: 28px;
 
-    box-shadow:
-        0 8px 25px rgba(36, 91, 69, 0.13);
+    box-shadow: 0 8px 25px rgba(36, 91, 69, 0.18);
 }
 
 .hero h1 {
-    color: white;
+    color: #FFFFFF !important;
     font-size: 43px;
     font-weight: 750;
     margin-bottom: 12px;
 }
 
 .hero p {
-    color: #E4F0E6;
+    color: #E4F0E6 !important;
     font-size: 16px;
     line-height: 1.8;
 }
@@ -89,7 +127,7 @@ footer {
 ========================================= */
 
 .section-title {
-    color: var(--primary);
+    color: var(--primary) !important;
     font-size: 25px;
     font-weight: 700;
     margin-top: 25px;
@@ -97,7 +135,8 @@ footer {
 }
 
 .section-description {
-    color: var(--text-muted);
+    color: var(--text-color) !important;
+    opacity: 0.8;
     font-size: 14px;
     margin-top: -10px;
     margin-bottom: 20px;
@@ -108,29 +147,33 @@ footer {
 ========================================= */
 
 div[data-testid="stMetric"] {
-    background: var(--surface);
+    background: var(--secondary-background-color);
+    color: var(--text-color);
     padding: 21px;
-    border: 1px solid var(--border);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
     box-shadow: var(--shadow);
 }
 
-div[data-testid="stMetricLabel"] {
-    color: var(--text-muted);
+div[data-testid="stMetricLabel"],
+div[data-testid="stMetricLabel"] p {
+    color: var(--text-color) !important;
+    opacity: 0.8;
 }
 
 div[data-testid="stMetricValue"] {
-    color: var(--primary);
+    color: var(--primary) !important;
     font-weight: 750;
 }
 
 /* =========================================
-   CARDS
+   INFORMATION CARDS
 ========================================= */
 
 .info-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
+    background: var(--secondary-background-color);
+    color: var(--text-color);
+    border: 1px solid var(--border-color);
     border-radius: 16px;
     padding: 20px;
     min-height: 105px;
@@ -139,57 +182,65 @@ div[data-testid="stMetricValue"] {
 }
 
 .info-card h4 {
-    color: var(--primary);
-    margin-bottom: 8px;
+    color: var(--primary) !important;
 }
 
 .info-label {
-    color: var(--text-muted);
+    color: var(--text-color) !important;
+    opacity: 0.75;
     font-size: 13px;
     margin-bottom: 10px;
 }
 
 .info-value {
-    color: var(--primary);
+    color: var(--primary) !important;
     font-size: 20px;
     font-weight: 700;
+    overflow-wrap: anywhere;
+}
+
+.info-card .result-note {
+    color: var(--text-color) !important;
+    opacity: 0.75;
+    font-size: 13px;
+    margin-top: 8px;
 }
 
 /* =========================================
    PREDICTION RESULT
+   Dark green in both themes
 ========================================= */
 
 .result-card {
     background: linear-gradient(
         125deg,
-        var(--primary-dark),
-        var(--primary-light)
+        #194632,
+        #397B59
     );
 
     padding: 32px;
     border-radius: 20px;
-    color: white;
+    color: #FFFFFF !important;
     min-height: 235px;
     margin-top: 15px;
     margin-bottom: 20px;
 
-    box-shadow:
-        0 8px 24px rgba(31, 81, 61, 0.12);
+    box-shadow: 0 8px 24px rgba(31, 81, 61, 0.18);
 }
 
 .result-card h3 {
-    color: #E4F0E6;
+    color: #E4F0E6 !important;
     font-size: 17px;
 }
 
 .result-label {
-    color: #D8EBDD;
+    color: #D8EBDD !important;
     font-size: 14px;
     font-weight: 500;
 }
 
 .result-value {
-    color: white;
+    color: #FFFFFF !important;
     font-size: 46px;
     font-weight: 750;
     margin-top: 22px;
@@ -197,19 +248,19 @@ div[data-testid="stMetricValue"] {
 }
 
 .result-unit {
-    color: #E2F0E5;
+    color: #E2F0E5 !important;
     font-size: 14px;
 }
 
-.result-note,
-.result-description {
-    color: #D8EBDD;
+.result-card .result-note,
+.result-card .result-description {
+    color: #D8EBDD !important;
     font-size: 13px;
     margin-top: 20px;
 }
 
 .result-heading {
-    color: var(--primary);
+    color: var(--primary) !important;
     font-size: 24px;
     font-weight: 700;
     margin-bottom: 18px;
@@ -222,7 +273,7 @@ div[data-testid="stMetricValue"] {
 .stButton button,
 .stDownloadButton button {
     background-color: var(--primary);
-    color: white;
+    color: #FFFFFF !important;
     border: 1px solid var(--primary);
     border-radius: 11px;
     padding: 10px 22px;
@@ -233,7 +284,7 @@ div[data-testid="stMetricValue"] {
 .stButton button:hover,
 .stDownloadButton button:hover {
     background-color: var(--primary-light);
-    color: white;
+    color: #FFFFFF !important;
     border-color: var(--primary-light);
 }
 
@@ -242,16 +293,29 @@ div[data-testid="stMetricValue"] {
 ========================================= */
 
 div[data-baseweb="input"],
-div[data-baseweb="select"] {
+div[data-baseweb="select"],
+div[data-baseweb="textarea"] {
     border-radius: 10px;
 }
 
 .stTextInput label,
 .stNumberInput label,
 .stSelectbox label,
-.stMultiSelect label {
-    color: var(--primary-dark);
+.stMultiSelect label,
+.stDateInput label,
+.stTextArea label {
+    color: var(--text-color) !important;
     font-weight: 600;
+}
+
+div[data-baseweb="input"] input,
+div[data-baseweb="textarea"] textarea {
+    color: var(--text-color) !important;
+}
+
+div[data-baseweb="select"] > div {
+    background: var(--secondary-background-color);
+    color: var(--text-color);
 }
 
 /* =========================================
@@ -259,14 +323,20 @@ div[data-baseweb="select"] {
 ========================================= */
 
 section[data-testid="stSidebar"] {
-    background-color: var(--surface-soft);
-    border-right: 1px solid var(--border);
+    background: var(--secondary-background-color);
+    border-right: 1px solid var(--border-color);
 }
 
 section[data-testid="stSidebar"] h1,
 section[data-testid="stSidebar"] h2,
 section[data-testid="stSidebar"] h3 {
-    color: var(--primary);
+    color: var(--primary) !important;
+}
+
+section[data-testid="stSidebar"] p,
+section[data-testid="stSidebar"] span,
+section[data-testid="stSidebar"] label {
+    color: var(--text-color);
 }
 
 /* =========================================
@@ -282,9 +352,47 @@ div[data-testid="stAlert"] {
 ========================================= */
 
 div[data-testid="stExpander"] {
-    background-color: var(--surface);
-    border: 1px solid var(--border);
+    background: var(--secondary-background-color);
+    border: 1px solid var(--border-color);
     border-radius: 13px;
+}
+
+div[data-testid="stExpander"] summary,
+div[data-testid="stExpander"] summary p {
+    color: var(--text-color) !important;
+}
+
+/* =========================================
+   TABLE & DATAFRAME
+========================================= */
+
+div[data-testid="stDataFrame"],
+div[data-testid="stTable"] {
+    color: var(--text-color);
+}
+
+/* =========================================
+   TABS
+========================================= */
+
+button[data-baseweb="tab"] {
+    color: var(--text-color) !important;
+}
+
+button[data-baseweb="tab"][aria-selected="true"] {
+    color: var(--primary) !important;
+}
+
+/* =========================================
+   LINKS
+========================================= */
+
+.stApp a {
+    color: var(--primary-light);
+}
+
+.stApp a:hover {
+    color: var(--primary);
 }
 
 /* =========================================
@@ -292,7 +400,7 @@ div[data-testid="stExpander"] {
 ========================================= */
 
 hr {
-    border-color: var(--border);
+    border-color: var(--border-color);
 }
 
 /* =========================================
@@ -316,5 +424,9 @@ hr {
 
     .result-value {
         font-size: 36px;
+    }
+
+    .info-value {
+        font-size: 17px;
     }
 }
