@@ -2,6 +2,7 @@ import base64
 import io
 from pathlib import Path
 from PIL import Image
+Image.MAX_IMAGE_PIXELS = None
 import streamlit as st
 
 ROOT_DIR = Path(__file__).resolve().parent
