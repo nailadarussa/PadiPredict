@@ -1,8 +1,8 @@
-
 from pathlib import Path
 import streamlit as st
 import pandas as pd
 import plotly.express as px
+from ui_helper import load_global_style
 
 # ==========================================
 # 1. KONFIGURASI HALAMAN
@@ -18,24 +18,51 @@ st.set_page_config(
 # 2. LOAD CSS
 # ==========================================
 
+load_global_style()
+
+# ==========================================
+# 3. LOAD & CLEAN DATASET (CACHED)
+# ==========================================
+
 ROOT_DIR = Path(__file__).resolve().parent.parent
-CSS_PATH = ROOT_DIR / "assets" / "styles" / "style.css"
-
-if CSS_PATH.exists():
-    st.markdown(
-        f"<style>{CSS_PATH.read_text(encoding='utf-8')}</style>",
-        unsafe_allow_html=True
-    )
-
-# ==========================================
-# 3. LOAD DATASET
-# ==========================================
-
 DATA_PATH = ROOT_DIR / "data" / "Data_Cropyield_Prediction.csv"
 
-@st.cache_data
-def load_data(path):
-    return pd.read_csv(path)
+
+@st.cache_data(show_spinner=False)
+def load_and_clean_data(path_str: str):
+    df = pd.read_csv(path_str)
+
+    kolom_wajib = [
+        "Kecamatan",
+        "Tahun",
+        "RATA-RATA PRODUKSI",
+        "TAVG",
+        "RH_AVG",
+        "RR",
+        "SS"
+    ]
+
+    kolom_hilang = [k for k in kolom_wajib if k not in df.columns]
+    if kolom_hilang:
+        return pd.DataFrame(), kolom_hilang
+
+    kolom_numerik = [
+        "Tahun",
+        "RATA-RATA PRODUKSI",
+        "TAVG",
+        "RH_AVG",
+        "RR",
+        "SS"
+    ]
+
+    for kolom in kolom_numerik:
+        df[kolom] = pd.to_numeric(df[kolom], errors="coerce")
+
+    df["Kecamatan"] = df["Kecamatan"].astype("string").str.strip()
+    df = df.dropna(subset=kolom_wajib).copy()
+    df["Tahun"] = df["Tahun"].astype(int)
+
+    return df, []
 
 
 st.title("📈 Visualisasi Data")
@@ -56,53 +83,13 @@ if not DATA_PATH.exists():
     )
     st.stop()
 
-df = load_data(str(DATA_PATH))
-
-# Kolom yang wajib tersedia
-kolom_wajib = [
-    "Kecamatan",
-    "Tahun",
-    "RATA-RATA PRODUKSI",
-    "TAVG",
-    "RH_AVG",
-    "RR",
-    "SS"
-]
-
-kolom_hilang = [
-    kolom for kolom in kolom_wajib
-    if kolom not in df.columns
-]
+df, kolom_hilang = load_and_clean_data(str(DATA_PATH))
 
 if kolom_hilang:
     st.error(
         f"Kolom berikut tidak ditemukan dalam dataset: {kolom_hilang}"
     )
     st.stop()
-
-# Konversi tipe data
-kolom_numerik = [
-    "Tahun",
-    "RATA-RATA PRODUKSI",
-    "TAVG",
-    "RH_AVG",
-    "RR",
-    "SS"
-]
-
-for kolom in kolom_numerik:
-    df[kolom] = pd.to_numeric(
-        df[kolom],
-        errors="coerce"
-    )
-
-df["Kecamatan"] = df["Kecamatan"].astype("string").str.strip()
-
-df = df.dropna(
-    subset=kolom_wajib
-).copy()
-
-df["Tahun"] = df["Tahun"].astype(int)
 
 if df.empty:
     st.error("Dataset tidak memiliki data valid untuk divisualisasikan.")
@@ -179,7 +166,6 @@ if data_filter.empty:
     st.warning("Tidak ada data untuk kombinasi filter tersebut.")
     st.stop()
 
-
 st.caption(
     f"Menampilkan {len(data_filter):,} baris data "
     f"dari {data_filter['Kecamatan'].nunique()} kecamatan."
@@ -204,291 +190,291 @@ st.download_button(
 st.divider()
 
 # ==========================================
+# GRAFIK VISUALISASI (DIBAGI PER TAB AGAR RINGAN)
+# ==========================================
+
+tab1, tab2, tab3, tab4, tab5 = st.tabs([
+    "📊 Tren Tahunan",
+    "📍 Perbandingan Kecamatan",
+    "📉 Distribusi",
+    "🌤️ Hubungan Agroklimat",
+    "🔗 Korelasi"
+])
+
+# ==========================================
 # 6. TREN PRODUKTIVITAS PER TAHUN
 # ==========================================
 
-st.subheader("📊 Tren Produktivitas Padi")
+with tab1:
+    st.subheader("📊 Tren Produktivitas Padi")
 
-tren = (
-    data_filter.groupby("Tahun", as_index=False)
-    ["RATA-RATA PRODUKSI"].mean()
-)
+    tren = (
+        data_filter.groupby("Tahun", as_index=False)
+        ["RATA-RATA PRODUKSI"].mean()
+    )
 
-fig_tren = px.line(
-    tren,
-    x="Tahun",
-    y="RATA-RATA PRODUKSI",
-    markers=True,
-    title="Rata-rata Produktivitas Padi per Tahun",
-    labels={
-        "Tahun": "Tahun",
-        "RATA-RATA PRODUKSI": "Rata-rata Produktivitas"
-    },
-    template="plotly_white"
-)
+    fig_tren = px.line(
+        tren,
+        x="Tahun",
+        y="RATA-RATA PRODUKSI",
+        markers=True,
+        title="Rata-rata Produktivitas Padi per Tahun",
+        labels={
+            "Tahun": "Tahun",
+            "RATA-RATA PRODUKSI": "Rata-rata Produktivitas"
+        },
+        template="plotly_white"
+    )
 
-fig_tren.update_layout(
-    hovermode="x unified",
-    xaxis=dict(dtick=1)
-)
+    fig_tren.update_layout(
+        hovermode="x unified",
+        xaxis=dict(dtick=1)
+    )
 
-st.plotly_chart(
-    fig_tren,
-    width="stretch"
-)
-
-st.divider()
+    st.plotly_chart(
+        fig_tren,
+        width="stretch"
+    )
 
 # ==========================================
 # 7. PERBANDINGAN PRODUKTIVITAS KECAMATAN
 # ==========================================
 
-st.subheader("📍 Perbandingan Produktivitas Kecamatan")
+with tab2:
+    st.subheader("📍 Perbandingan Produktivitas Kecamatan")
 
-mode_kecamatan = st.radio(
-    "Pilih tampilan perbandingan:",
-    options=[
-        "Semua Kecamatan",
-        "10 Tertinggi",
-        "10 Terendah"
-    ],
-    horizontal=True
-)
-
-per_kecamatan = (
-    data_filter.groupby("Kecamatan", as_index=False)
-    ["RATA-RATA PRODUKSI"].mean()
-)
-
-if mode_kecamatan == "10 Tertinggi":
-    per_kecamatan = per_kecamatan.nlargest(
-        10,
-        "RATA-RATA PRODUKSI"
+    mode_kecamatan = st.radio(
+        "Pilih tampilan perbandingan:",
+        options=[
+            "Semua Kecamatan",
+            "10 Tertinggi",
+            "10 Terendah"
+        ],
+        horizontal=True
     )
 
-elif mode_kecamatan == "10 Terendah":
-    per_kecamatan = per_kecamatan.nsmallest(
-        10,
-        "RATA-RATA PRODUKSI"
+    per_kecamatan = (
+        data_filter.groupby("Kecamatan", as_index=False)
+        ["RATA-RATA PRODUKSI"].mean()
     )
 
-per_kecamatan = per_kecamatan.sort_values(
-    "RATA-RATA PRODUKSI",
-    ascending=True
-)
+    if mode_kecamatan == "10 Tertinggi":
+        per_kecamatan = per_kecamatan.nlargest(
+            10,
+            "RATA-RATA PRODUKSI"
+        )
+    elif mode_kecamatan == "10 Terendah":
+        per_kecamatan = per_kecamatan.nsmallest(
+            10,
+            "RATA-RATA PRODUKSI"
+        )
 
-fig_kecamatan = px.bar(
-    per_kecamatan,
-    x="RATA-RATA PRODUKSI",
-    y="Kecamatan",
-    orientation="h",
-    title=f"Produktivitas Padi - {mode_kecamatan}",
-    labels={
-        "RATA-RATA PRODUKSI": "Rata-rata Produktivitas",
-        "Kecamatan": "Kecamatan"
-    },
-    template="plotly_white"
-)
+    per_kecamatan = per_kecamatan.sort_values(
+        "RATA-RATA PRODUKSI",
+        ascending=True
+    )
 
-fig_kecamatan.update_layout(
-    yaxis={"categoryorder": "total ascending"}
-)
+    fig_kecamatan = px.bar(
+        per_kecamatan,
+        x="RATA-RATA PRODUKSI",
+        y="Kecamatan",
+        orientation="h",
+        title=f"Produktivitas Padi - {mode_kecamatan}",
+        labels={
+            "RATA-RATA PRODUKSI": "Rata-rata Produktivitas",
+            "Kecamatan": "Kecamatan"
+        },
+        template="plotly_white"
+    )
 
-st.plotly_chart(
-    fig_kecamatan,
-    width="stretch"
-)
+    fig_kecamatan.update_layout(
+        yaxis={"categoryorder": "total ascending"}
+    )
 
-st.divider()
+    st.plotly_chart(
+        fig_kecamatan,
+        width="stretch"
+    )
 
 # ==========================================
 # 8. DISTRIBUSI PRODUKTIVITAS
 # ==========================================
 
-st.subheader("📉 Distribusi Produktivitas")
+with tab3:
+    st.subheader("📉 Distribusi Produktivitas")
 
-nilai_rata_rata = data_filter[
-    "RATA-RATA PRODUKSI"
-].mean()
+    nilai_rata_rata = data_filter["RATA-RATA PRODUKSI"].mean()
+    nilai_median = data_filter["RATA-RATA PRODUKSI"].median()
 
-nilai_median = data_filter[
-    "RATA-RATA PRODUKSI"
-].median()
+    d1, d2 = st.columns(2)
 
-d1, d2 = st.columns(2)
+    d1.metric(
+        "Rata-rata Produktivitas",
+        f"{nilai_rata_rata:.2f}"
+    )
 
-d1.metric(
-    "Rata-rata Produktivitas",
-    f"{nilai_rata_rata:.2f}"
-)
+    d2.metric(
+        "Median Produktivitas",
+        f"{nilai_median:.2f}"
+    )
 
-d2.metric(
-    "Median Produktivitas",
-    f"{nilai_median:.2f}"
-)
+    fig_distribusi = px.histogram(
+        data_filter,
+        x="RATA-RATA PRODUKSI",
+        nbins=25,
+        title="Distribusi Nilai Produktivitas Padi",
+        labels={
+            "RATA-RATA PRODUKSI": "Produktivitas",
+            "count": "Jumlah Observasi"
+        },
+        template="plotly_white"
+    )
 
-fig_distribusi = px.histogram(
-    data_filter,
-    x="RATA-RATA PRODUKSI",
-    nbins=25,
-    title="Distribusi Nilai Produktivitas Padi",
-    labels={
-        "RATA-RATA PRODUKSI": "Produktivitas",
-        "count": "Jumlah Observasi"
-    },
-    template="plotly_white"
-)
+    fig_distribusi.add_vline(
+        x=nilai_rata_rata,
+        line_dash="dash",
+        line_width=2,
+        annotation_text=f"Rata-rata: {nilai_rata_rata:.2f}",
+        annotation_position="top"
+    )
 
-# Garis rata-rata
-fig_distribusi.add_vline(
-    x=nilai_rata_rata,
-    line_dash="dash",
-    line_width=2,
-    annotation_text=f"Rata-rata: {nilai_rata_rata:.2f}",
-    annotation_position="top"
-)
+    fig_distribusi.update_layout(
+        bargap=0.08
+    )
 
-fig_distribusi.update_layout(
-    bargap=0.08
-)
+    st.plotly_chart(
+        fig_distribusi,
+        width="stretch"
+    )
 
-st.plotly_chart(
-    fig_distribusi,
-    width="stretch"
-)
-
-st.caption(
-    "Histogram menunjukkan sebaran nilai produktivitas. "
-    "Garis putus-putus menunjukkan nilai rata-rata."
-)
-
-st.divider()
+    st.caption(
+        "Histogram menunjukkan sebaran nilai produktivitas. "
+        "Garis putus-putus menunjukkan nilai rata-rata."
+    )
 
 # ==========================================
 # 9. HUBUNGAN AGROKLIMAT DENGAN PRODUKTIVITAS
 # ==========================================
 
-st.subheader("🌤️ Hubungan Parameter Agroklimat")
+with tab4:
+    st.subheader("🌤️ Hubungan Parameter Agroklimat")
 
-nama_parameter = {
-    "TAVG": "Suhu Rata-rata (TAVG)",
-    "RH_AVG": "Kelembapan Rata-rata (RH_AVG)",
-    "RR": "Curah Hujan (RR)",
-    "SS": "Penyinaran Matahari (SS)"
-}
+    nama_parameter = {
+        "TAVG": "Suhu Rata-rata (TAVG)",
+        "RH_AVG": "Kelembapan Rata-rata (RH_AVG)",
+        "RR": "Curah Hujan (RR)",
+        "SS": "Penyinaran Matahari (SS)"
+    }
 
-col1, col2 = st.columns(2)
+    col1, col2 = st.columns(2)
 
-with col1:
-    parameter = st.selectbox(
-        "Pilih Parameter Agroklimat",
-        options=list(nama_parameter.keys()),
-        format_func=lambda x: nama_parameter[x]
+    with col1:
+        parameter = st.selectbox(
+            "Pilih Parameter Agroklimat",
+            options=list(nama_parameter.keys()),
+            format_func=lambda x: nama_parameter[x]
+        )
+
+    with col2:
+        warna_kecamatan = st.checkbox(
+            "Bedakan warna berdasarkan kecamatan",
+            value=False
+        )
+
+    fig_hubungan = px.scatter(
+        data_filter,
+        x=parameter,
+        y="RATA-RATA PRODUKSI",
+        color="Kecamatan" if warna_kecamatan else None,
+        hover_data=["Tahun", "Kecamatan"],
+        title=f"Hubungan {nama_parameter[parameter]} dengan Produktivitas Padi",
+        labels={
+            parameter: nama_parameter[parameter],
+            "RATA-RATA PRODUKSI": "Produktivitas"
+        },
+        template="plotly_white"
     )
 
-with col2:
-    warna_kecamatan = st.checkbox(
-        "Bedakan warna berdasarkan kecamatan",
-        value=False
+    fig_hubungan.update_layout(
+        legend_title_text="Kecamatan"
     )
 
-fig_hubungan = px.scatter(
-    data_filter,
-    x=parameter,
-    y="RATA-RATA PRODUKSI",
-    color="Kecamatan" if warna_kecamatan else None,
-    hover_data=["Tahun", "Kecamatan"],
-    title=f"Hubungan {nama_parameter[parameter]} dengan Produktivitas Padi",
-    labels={
-        parameter: nama_parameter[parameter],
-        "RATA-RATA PRODUKSI": "Produktivitas"
-    },
-    template="plotly_white"
-)
+    st.plotly_chart(
+        fig_hubungan,
+        width="stretch"
+    )
 
-fig_hubungan.update_layout(
-    legend_title_text="Kecamatan"
-)
-
-st.plotly_chart(
-    fig_hubungan,
-    width="stretch"
-)
-
-st.caption(
-    "Grafik menunjukkan pola hubungan pada data historis "
-    "dan tidak secara langsung membuktikan hubungan sebab-akibat."
-)
-
-st.divider()
+    st.caption(
+        "Grafik menunjukkan pola hubungan pada data historis "
+        "dan tidak secara langsung membuktikan hubungan sebab-akibat."
+    )
 
 # ==========================================
 # 10. HEATMAP KORELASI
 # ==========================================
 
-st.subheader("🔗 Korelasi Antarvariabel")
+with tab5:
+    st.subheader("🔗 Korelasi Antarvariabel")
 
-st.write(
-    """
-    Heatmap digunakan untuk melihat kekuatan dan arah hubungan
-    linear antarvariabel numerik dalam dataset.
-    """
-)
+    st.write(
+        """
+        Heatmap digunakan untuk melihat kekuatan dan arah hubungan
+        linear antarvariabel numerik dalam dataset.
+        """
+    )
 
-# Variabel target dan fitur yang direncanakan untuk model
-kolom_korelasi = [
-    "Tahun",
-    "TAVG",
-    "RH_AVG",
-    "RR",
-    "SS",
-    "RATA-RATA PRODUKSI"
-]
+    kolom_korelasi = [
+        "Tahun",
+        "TAVG",
+        "RH_AVG",
+        "RR",
+        "SS",
+        "RATA-RATA PRODUKSI"
+    ]
 
-matriks_korelasi = data_filter[
-    kolom_korelasi
-].corr(method="pearson")
+    matriks_korelasi = data_filter[
+        kolom_korelasi
+    ].corr(method="pearson")
 
-fig_korelasi = px.imshow(
-    matriks_korelasi,
-    text_auto=".2f",
-    aspect="auto",
-    color_continuous_scale="RdBu_r",
-    zmin=-1,
-    zmax=1,
-    title="Heatmap Korelasi Parameter Agroklimat dan Produktivitas",
-    labels={
-        "x": "Variabel",
-        "y": "Variabel",
-        "color": "Korelasi"
-    }
-)
+    fig_korelasi = px.imshow(
+        matriks_korelasi,
+        text_auto=".2f",
+        aspect="auto",
+        color_continuous_scale="RdBu_r",
+        zmin=-1,
+        zmax=1,
+        title="Heatmap Korelasi Parameter Agroklimat dan Produktivitas",
+        labels={
+            "x": "Variabel",
+            "y": "Variabel",
+            "color": "Korelasi"
+        }
+    )
 
-st.plotly_chart(
-    fig_korelasi,
-    width="stretch"
-)
+    st.plotly_chart(
+        fig_korelasi,
+        width="stretch"
+    )
 
-st.caption(
-    """
-    Interpretasi umum:
-    +1 menunjukkan korelasi positif sempurna,
-    0 menunjukkan tidak adanya korelasi linear,
-    dan -1 menunjukkan korelasi negatif sempurna.
-    Korelasi tidak membuktikan hubungan sebab-akibat.
-    """
-)
+    st.caption(
+        """
+        Interpretasi umum:
+        +1 menunjukkan korelasi positif sempurna,
+        0 menunjukkan tidak adanya korelasi linear,
+        dan -1 menunjukkan korelasi negatif sempurna.
+        Korelasi tidak membuktikan hubungan sebab-akibat.
+        """
+    )
 
-st.info(
-    """
-    Catatan: Heatmap ini berfokus pada tahun, parameter agroklimat,
-    dan variabel target. Variabel LUAS PANEN dan PRODUKSI tidak
-    dimasukkan karena keduanya tidak direncanakan sebagai fitur
-    """
-)
+    st.info(
+        """
+        Catatan: Heatmap ini berfokus pada tahun, parameter agroklimat,
+        dan variabel target. Variabel LUAS PANEN dan PRODUKSI tidak
+        dimasukkan karena keduanya tidak direncanakan sebagai fitur
+        """
+    )
 
 st.divider()
-
 
 # ==========================================
 # 11. RINGKASAN INSIGHT OTOMATIS
@@ -503,21 +489,18 @@ st.write(
     """
 )
 
-# Rata-rata produktivitas setiap kecamatan
 insight_kecamatan = (
     data_filter.groupby("Kecamatan")["RATA-RATA PRODUKSI"]
     .mean()
     .sort_values(ascending=False)
 )
 
-# Rata-rata produktivitas setiap tahun
 insight_tahun = (
     data_filter.groupby("Tahun")["RATA-RATA PRODUKSI"]
     .mean()
     .sort_values(ascending=False)
 )
 
-# Korelasi parameter terhadap target
 parameter_korelasi = ["TAVG", "RH_AVG", "RR", "SS"]
 
 hasil_korelasi = (
@@ -527,21 +510,18 @@ hasil_korelasi = (
     .dropna()
 )
 
-# Menentukan kecamatan tertinggi dan terendah
 kecamatan_tertinggi = insight_kecamatan.idxmax()
 nilai_kecamatan_tertinggi = insight_kecamatan.max()
 
 kecamatan_terendah = insight_kecamatan.idxmin()
 nilai_kecamatan_terendah = insight_kecamatan.min()
 
-# Menentukan tahun tertinggi dan terendah
 tahun_tertinggi = insight_tahun.idxmax()
 nilai_tahun_tertinggi = insight_tahun.max()
 
 tahun_terendah = insight_tahun.idxmin()
 nilai_tahun_terendah = insight_tahun.min()
 
-# Menentukan parameter dengan korelasi absolut terbesar
 if not hasil_korelasi.empty:
     parameter_terkuat = hasil_korelasi.abs().idxmax()
     nilai_korelasi_terkuat = hasil_korelasi[parameter_terkuat]
@@ -549,7 +529,6 @@ else:
     parameter_terkuat = None
     nilai_korelasi_terkuat = None
 
-# Tampilan kartu insight
 col1, col2 = st.columns(2)
 
 with col1:
@@ -629,11 +608,10 @@ st.caption(
 st.divider()
 
 # ==========================================
-# 11. TABEL DATA
+# 12. TABEL DATA
 # ==========================================
 
 with st.expander("📋 Lihat Data yang Digunakan"):
-
     st.dataframe(
         data_filter.sort_values(
             ["Tahun", "Kecamatan"]
@@ -643,7 +621,7 @@ with st.expander("📋 Lihat Data yang Digunakan"):
     )
 
 # ==========================================
-# 12. FOOTER
+# 13. FOOTER
 # ==========================================
 
 st.divider()
